@@ -3,7 +3,8 @@
 }
 
 body {
-  background-color: #1C1E22;
+  font-family: 'Bebas Neue';
+  background-color: #1c1e22;
   color: white;
   display: flex;
   align-items: center;
@@ -16,9 +17,18 @@ button {
   background-color: transparent;
   color: white;
   cursor: pointer;
-  font-size: 30px;
-  padding:  10px 15x;
+  font-size: 25px;
+  padding: 10px 15x;
   margin: 10px;
+}
+
+h1 {
+  font-size: 70px;
+}
+
+h2 {
+  font-size: 35px;
+  margin: 0px;
 }
 
 .flex {
@@ -31,23 +41,22 @@ button {
   margin: 20px;
 }
 
-/* .timer-container h2 {
-  margin: -50px 20px 20px;
-} */
-
 .actions-wrapper span {
-  font-size: 40px;
-  margin: 0px 10px;
-  width: 100px;
+  font-size: 45px;
+  margin: -1px 0px 0px 0px;
+  width: 80px;
 }
 
 .clock-container {
-  border:  2px solid white;
-  border-radius: 10px;
+  border: 2px solid white;
+  border-radius: 20px;
   display: inline-block;
   padding: 10px 100px;
-  margin-top: 20px;
-  width: 500px;
+  width: 450px;
+}
+
+.clock-internal {
+  height: 180px;
 }
 
 .clock-container h1 {
@@ -56,4 +65,48 @@ button {
 
 .clock-container span {
   font-size: 60px;
+}
+
+.number {
+  font-family: 'Orbitron', sans-serif;
+}
+
+.squiggly {
+  -webkit-animation: squiggly-anim 0.34s linear infinite;
+  animation: squiggly-anim 0.34s linear infinite;
+}
+
+@-webkit-keyframes squiggly-anim {
+  0% {
+    filter: url('#squiggly-0');
+  }
+  25% {
+    filter: url('#squiggly-1');
+  }
+  50% {
+    filter: url('#squiggly-2');
+  }
+  75% {
+    filter: url('#squiggly-3');
+  }
+  100% {
+    filter: url('#squiggly-4');
+  }
+}
+@keyframes squiggly-anim {
+  0% {
+    filter: url('#squiggly-0');
+  }
+  25% {
+    filter: url('#squiggly-1');
+  }
+  50% {
+    filter: url('#squiggly-2');
+  }
+  75% {
+    filter: url('#squiggly-3');
+  }
+  100% {
+    filter: url('#squiggly-4');
+  }
 }

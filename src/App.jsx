@@ -7,6 +7,8 @@ import {
   faPlay,
   faPause,
   faSync,
+  faVolumeMute,
+  faVolumeUp,
 } from '@fortawesome/free-solid-svg-icons';
 
 const audio = document.getElementById('beep');
@@ -17,6 +19,7 @@ class App extends React.Component {
     clockCount: 25 * 60,
     currentTimer: 'Session',
     isPlaying: false,
+    audioMuted: false,
     loop: undefined,
   };
 
@@ -47,6 +50,8 @@ class App extends React.Component {
             clockCount:
               currentTimer === 'Session' ? breakCount * 60 : sessionCount * 60,
           });
+        } else if (clockCount === 3) {
+          this.setState({ clockCount: clockCount - 1 });
           audio.play();
         } else {
           this.setState({ clockCount: clockCount - 1 });
@@ -62,12 +67,21 @@ class App extends React.Component {
       clockCount: 25 * 60,
       currentTimer: 'Session',
       isPlaying: false,
+      audioMuted: false,
     });
 
     clearInterval(this.loop);
 
     audio.pause();
+    audio.muted = false;
     audio.currentTime = 0;
+  };
+
+  handleAudioMute = () => {
+    audio.muted = !audio.muted;
+    this.setState({
+      audioMuted: audio.muted,
+    });
   };
 
   convertToTime = (count) => {
@@ -157,8 +171,14 @@ class App extends React.Component {
   };
 
   render() {
-    const { breakCount, sessionCount, clockCount, currentTimer, isPlaying } =
-      this.state;
+    const {
+      breakCount,
+      sessionCount,
+      clockCount,
+      currentTimer,
+      isPlaying,
+      audioMuted,
+    } = this.state;
 
     const breakProps = {
       title: 'Break',
@@ -181,9 +201,20 @@ class App extends React.Component {
           <SetTimer {...sessionProps} />
         </div>
         <div className="clock-container">
-          <h1 id="timer-label">{currentTimer}</h1>
-          <span id="time-left">{this.convertToTime(clockCount)}</span>
-
+          <div className="clock-internal">
+            <h1
+              id="timer-label"
+              className={isPlaying ? 'squiggly' : 'undefined'}
+            >
+              {currentTimer}
+            </h1>
+            <span
+              id="time-left"
+              className={isPlaying ? 'squiggly number' : 'number'}
+            >
+              {this.convertToTime(clockCount)}
+            </span>
+          </div>
           <div className="flex">
             <button id="start_stop" onClick={this.handlePlayPause}>
               <FontAwesomeIcon icon={isPlaying ? faPause : faPlay} />
@@ -191,7 +222,73 @@ class App extends React.Component {
             <button id="reset" onClick={this.handleReset}>
               <FontAwesomeIcon icon={faSync} />
             </button>
+            <button id="mute_audio" onClick={this.handleAudioMute}>
+              <FontAwesomeIcon icon={audioMuted ? faVolumeMute : faVolumeUp} />
+            </button>
           </div>
+        </div>
+        <div id="squigglyText">
+          <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+            <defs>
+              <filter id="squiggly-0">
+                <feTurbulence
+                  id="turbulence"
+                  baseFrequency="0.02"
+                  numOctaves="3"
+                  result="noise"
+                  seed="0"
+                />
+                <feDisplacementMap
+                  id="displacement"
+                  in="SourceGraphic"
+                  in2="noise"
+                  scale="6"
+                />
+              </filter>
+              <filter id="squiggly-1">
+                <feTurbulence
+                  id="turbulence"
+                  baseFrequency="0.02"
+                  numOctaves="3"
+                  result="noise"
+                  seed="1"
+                />
+                <feDisplacementMap in="SourceGraphic" in2="noise" scale="8" />
+              </filter>
+
+              <filter id="squiggly-2">
+                <feTurbulence
+                  id="turbulence"
+                  baseFrequency="0.02"
+                  numOctaves="3"
+                  result="noise"
+                  seed="2"
+                />
+                <feDisplacementMap in="SourceGraphic" in2="noise" scale="6" />
+              </filter>
+              <filter id="squiggly-3">
+                <feTurbulence
+                  id="turbulence"
+                  baseFrequency="0.02"
+                  numOctaves="3"
+                  result="noise"
+                  seed="3"
+                />
+                <feDisplacementMap in="SourceGraphic" in2="noise" scale="8" />
+              </filter>
+
+              <filter id="squiggly-4">
+                <feTurbulence
+                  id="turbulence"
+                  baseFrequency="0.02"
+                  numOctaves="3"
+                  result="noise"
+                  seed="4"
+                />
+                <feDisplacementMap in="SourceGraphic" in2="noise" scale="6" />
+              </filter>
+            </defs>
+          </svg>
         </div>
       </div>
     );
@@ -207,7 +304,9 @@ const SetTimer = (props) => {
         <button id={`${id}-decrement`} onClick={props.handleDecrease}>
           <FontAwesomeIcon icon={faMinus} />
         </button>
-        <span id={`${id}-length`}>{props.count}</span>
+        <span id={`${id}-length`} className="number">
+          {props.count}
+        </span>
         <button id={`${id}-increment`} onClick={props.handleIncrease}>
           <FontAwesomeIcon icon={faPlus} />
         </button>
