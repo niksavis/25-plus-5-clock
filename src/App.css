@@ -8,7 +8,16 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  text-align: center;
+  height: 80vh;
+}
+
+button {
+  background-color: transparent;
+  color: white;
+  font-size: 30px;
+  padding:  10px 15x;
+  margin: 10px;
 }
 
 .flex {
@@ -21,19 +30,27 @@ body {
   margin: 20px;
 }
 
-.timer-container h1 {
-  text-align: center;
-}
-
-.actions-wrapper button {
-  background-color: transparent;
-  color: white;
-  font-size: 30px;
-  padding:  10px 15x;
-  margin: 10px;
-}
+/* .timer-container h2 {
+  margin: -50px 20px 20px;
+} */
 
 .actions-wrapper span {
   font-size: 40px;
   margin: 0px 10px;
+}
+
+.clock-container {
+  border:  2px solid white;
+  border-radius: 10px;
+  display: inline-block;
+  padding: 10px 110px;
+  margin-top: 20px;
+}
+
+.clock-container h1 {
+  margin: 0px;
+}
+
+.clock-container span {
+  font-size: 60px;
 }

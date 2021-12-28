@@ -1,17 +1,22 @@
 import React from 'react';
 import './App.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
+import {
+  faPlus,
+  faMinus,
+  faPlay,
+  faPause,
+  faSync,
+} from '@fortawesome/free-solid-svg-icons';
 
 class App extends React.Component {
   state = {
     breakCount: 5,
-    sessionCount: 25
-  }
+    sessionCount: 25,
+  };
 
   render() {
-    
-    const {breakCount, sessionCount} = this.state;
+    const { breakCount, sessionCount } = this.state;
 
     const breakProps = {
       title: 'Break Length',
@@ -33,7 +38,19 @@ class App extends React.Component {
           <SetTimer {...breakProps} />
           <SetTimer {...sessionProps} />
         </div>
-        <div>clock goes here</div>
+        <div className="clock-container">
+          <h1>Session</h1>
+          <span>25:00</span>
+          <div className="flex">
+            <button onClick={this.handlePlayPause}>
+              <FontAwesomeIcon icon={faPlay} />
+              <FontAwesomeIcon icon={faPause} />
+            </button>
+            <button onClick={this.handleReset}>
+              <FontAwesomeIcon icon={faSync} />
+            </button>
+          </div>
+        </div>
       </div>
     );
   }
@@ -41,7 +58,7 @@ class App extends React.Component {
 
 const SetTimer = (props) => (
   <div className="timer-container">
-    <h1>{props.title}</h1>
+    <h2>{props.title}</h2>
     <div className="flex actions-wrapper">
       <button onClick={props.handleDecrease}>
         <FontAwesomeIcon icon={faMinus} />
