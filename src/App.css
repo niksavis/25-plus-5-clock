@@ -38,6 +38,7 @@ button {
 .actions-wrapper span {
   font-size: 40px;
   margin: 0px 10px;
+  width: 100px;
 }
 
 .clock-container {
@@ -46,7 +47,7 @@ button {
   display: inline-block;
   padding: 10px 100px;
   margin-top: 20px;
-  width: 360px;
+  width: 500px;
 }
 
 .clock-container h1 {

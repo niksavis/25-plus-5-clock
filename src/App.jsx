@@ -9,11 +9,12 @@ import {
   faSync,
 } from '@fortawesome/free-solid-svg-icons';
 
+const audio = document.getElementById('beep');
 class App extends React.Component {
   state = {
     breakCount: 5,
     sessionCount: 25,
-    clockCount: 25 * 60,
+    clockCount: 3,
     currentTimer: 'Session',
     isPlaying: false,
     loop: undefined,
@@ -46,6 +47,7 @@ class App extends React.Component {
             clockCount:
               currentTimer === 'Session' ? breakCount * 60 : sessionCount * 60,
           });
+          audio.play();
         } else {
           this.setState({ clockCount: clockCount - 1 });
         }
@@ -63,6 +65,9 @@ class App extends React.Component {
     });
 
     clearInterval(this.loop);
+
+    audio.pause();
+    audio.currentTime = 0;
   };
 
   convertToTime = (count) =>
@@ -72,7 +77,7 @@ class App extends React.Component {
 
   handleBreakDecrease = () => {
     const { breakCount } = this.state;
-    if (breakCount > 0) {
+    if (breakCount > 1) {
       this.setState({
         breakCount: breakCount - 1,
       });
@@ -81,7 +86,7 @@ class App extends React.Component {
 
   handleBreakIncrease = () => {
     const { breakCount } = this.state;
-    if (breakCount < 1440) {
+    if (breakCount < 60) {
       this.setState({
         breakCount: breakCount + 1,
       });
@@ -90,7 +95,7 @@ class App extends React.Component {
 
   handleSessionDecrease = () => {
     const { sessionCount } = this.state;
-    if (sessionCount > 0) {
+    if (sessionCount > 1) {
       this.setState({
         sessionCount: sessionCount - 1,
       });
@@ -99,7 +104,7 @@ class App extends React.Component {
 
   handleSessionIncrease = () => {
     const { sessionCount } = this.state;
-    if (sessionCount < 1440) {
+    if (sessionCount < 60) {
       this.setState({
         sessionCount: sessionCount + 1,
       });
@@ -111,14 +116,14 @@ class App extends React.Component {
       this.state;
 
     const breakProps = {
-      title: 'Break Length',
+      title: 'Break',
       count: breakCount,
       handleDecrease: this.handleBreakDecrease,
       handleIncrease: this.handleBreakIncrease,
     };
 
     const sessionProps = {
-      title: 'Session Length',
+      title: 'Session',
       count: sessionCount,
       handleDecrease: this.handleSessionDecrease,
       handleIncrease: this.handleSessionIncrease,
@@ -131,13 +136,14 @@ class App extends React.Component {
           <SetTimer {...sessionProps} />
         </div>
         <div className="clock-container">
-          <h1>{currentTimer}</h1>
-          <span>{this.convertToTime(clockCount)}</span>
+          <h1 id="timer-label">{currentTimer}</h1>
+          <span id="time-left">{this.convertToTime(clockCount)}</span>
+
           <div className="flex">
-            <button onClick={this.handlePlayPause}>
+            <button id="start_stop" onClick={this.handlePlayPause}>
               <FontAwesomeIcon icon={isPlaying ? faPause : faPlay} />
             </button>
-            <button onClick={this.handleReset}>
+            <button id="reset" onClick={this.handleReset}>
               <FontAwesomeIcon icon={faSync} />
             </button>
           </div>
@@ -147,19 +153,22 @@ class App extends React.Component {
   }
 }
 
-const SetTimer = (props) => (
-  <div className="timer-container">
-    <h2>{props.title}</h2>
-    <div className="flex actions-wrapper">
-      <button onClick={props.handleDecrease}>
-        <FontAwesomeIcon icon={faMinus} />
-      </button>
-      <span>{props.count}</span>
-      <button onClick={props.handleIncrease}>
-        <FontAwesomeIcon icon={faPlus} />
-      </button>
+const SetTimer = (props) => {
+  const id = props.title.toLowerCase();
+  return (
+    <div className="timer-container">
+      <h2 id={`${id}-label`}>{props.title} Length</h2>
+      <div className="flex actions-wrapper">
+        <button id={`${id}-decrement`} onClick={props.handleDecrease}>
+          <FontAwesomeIcon icon={faMinus} />
+        </button>
+        <span id={`${id}-length`}>{props.count}</span>
+        <button id={`${id}-increment`} onClick={props.handleIncrease}>
+          <FontAwesomeIcon icon={faPlus} />
+        </button>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default App;
