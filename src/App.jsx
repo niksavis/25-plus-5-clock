@@ -14,7 +14,7 @@ class App extends React.Component {
   state = {
     breakCount: 5,
     sessionCount: 25,
-    clockCount: 3,
+    clockCount: 25 * 60,
     currentTimer: 'Session',
     isPlaying: false,
     loop: undefined,
@@ -70,44 +70,89 @@ class App extends React.Component {
     audio.currentTime = 0;
   };
 
-  convertToTime = (count) =>
-    count < 3600
-      ? new Date(count * 1000).toISOString().substring(14, 19)
-      : new Date(count * 1000).toISOString().substring(11, 19);
+  convertToTime = (count) => {
+    let minutes = Math.floor(count / 60);
+    let seconds = count % 60;
+
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+    seconds = seconds < 10 ? '0' + seconds : seconds;
+
+    return `${minutes}:${seconds}`;
+  };
 
   handleBreakDecrease = () => {
-    const { breakCount } = this.state;
+    const { breakCount, isPlaying, currentTimer } = this.state;
     if (breakCount > 1) {
-      this.setState({
-        breakCount: breakCount - 1,
-      });
+      if (!isPlaying && currentTimer === 'Break') {
+        this.setState({
+          breakCount: breakCount - 1,
+          clockCount: (breakCount - 1) * 60,
+        });
+      } else if (isPlaying) {
+        // do nothing
+        return;
+      } else {
+        this.setState({
+          breakCount: breakCount - 1,
+        });
+      }
     }
   };
 
   handleBreakIncrease = () => {
-    const { breakCount } = this.state;
+    const { breakCount, isPlaying, currentTimer } = this.state;
     if (breakCount < 60) {
-      this.setState({
-        breakCount: breakCount + 1,
-      });
+      if (!isPlaying && currentTimer === 'Break') {
+        this.setState({
+          breakCount: breakCount + 1,
+          clockCount: (breakCount + 1) * 60,
+        });
+      } else if (isPlaying) {
+        // do nothing
+        return;
+      } else {
+        this.setState({
+          breakCount: breakCount + 1,
+        });
+      }
     }
   };
 
   handleSessionDecrease = () => {
-    const { sessionCount } = this.state;
+    const { sessionCount, isPlaying, currentTimer } = this.state;
     if (sessionCount > 1) {
-      this.setState({
-        sessionCount: sessionCount - 1,
-      });
+      if (!isPlaying && currentTimer === 'Session') {
+        this.setState({
+          sessionCount: sessionCount - 1,
+          clockCount: (sessionCount - 1) * 60,
+        });
+      } else if (isPlaying) {
+        // do nothing
+        return;
+      } else {
+        this.setState({
+          sessionCount: sessionCount - 1,
+        });
+      }
     }
   };
 
   handleSessionIncrease = () => {
-    const { sessionCount } = this.state;
+    const { sessionCount, isPlaying, currentTimer } = this.state;
     if (sessionCount < 60) {
-      this.setState({
-        sessionCount: sessionCount + 1,
-      });
+      if (!isPlaying && currentTimer === 'Session') {
+        this.setState({
+          sessionCount: sessionCount + 1,
+          clockCount: (sessionCount + 1) * 60,
+        });
+      } else if (isPlaying) {
+        // do nothing
+        return;
+      } else {
+        this.setState({
+          sessionCount: sessionCount + 1,
+        });
+      }
     }
   };
 
